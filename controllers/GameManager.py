@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from controllers.Button import Button
 from PlayerManager import PlayerManager
+from models.constants import *
 
 class GameManager:
     def __init__(self):
