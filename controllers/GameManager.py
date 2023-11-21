@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from controllers.Button import Button
-from PlayerManager import PlayerManager
+from controllers.PlayerManager import PlayerManager
 from models.constants import *
 
 class GameManager:
@@ -12,6 +12,8 @@ class GameManager:
         GameManager.clock = pygame.time.Clock()
         GameManager.deltaTime = 0
         GameManager.running = True
+
+        self.buttonTest = Button("res/sprites/button_sprite_test.png", Rect(100, 100, 200, 200))
 
     def run(self):
         while GameManager.running:
@@ -27,10 +29,11 @@ class GameManager:
 
     def update(self):
         GameManager.deltaTime = GameManager.clock.tick(200) / 1000
-        Button.update()
+        self.buttonTest.update()
 
     def render(self):
         GameManager.screen.fill(BACKGROUND_COLOR)
 
-        Button.render()
+        self.buttonTest.render()
+
         pygame.display.update()

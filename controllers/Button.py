@@ -17,9 +17,9 @@ class Button:
 
     def update(self)->None:
         if self.rect.collidepoint(mouse_pos()) and mouse_buttons()[0]:
-            if self.on_click and not self.previously_clicked:
+            if self.onClick and not self.previously_clicked:
                 self.previously_clicked = True
-                self.on_click()
+                self.onClick()
         else:
             self.previously_clicked = False
 
