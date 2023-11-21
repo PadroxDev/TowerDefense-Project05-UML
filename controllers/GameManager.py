@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
-from controllers.PlayerManager import PlayerManager
-from models.constants import *
+from controllers.Button import Button
+from PlayerManager import PlayerManager
 
 class GameManager:
     def __init__(self):
@@ -26,8 +26,10 @@ class GameManager:
 
     def update(self):
         GameManager.deltaTime = GameManager.clock.tick(200) / 1000
+        Button.update()
 
     def render(self):
         GameManager.screen.fill(BACKGROUND_COLOR)
 
+        Button.render()
         pygame.display.update()
