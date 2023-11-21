@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from controllers.Button import Button
 
 class GameManager:
     def __init__(self):
@@ -22,8 +23,9 @@ class GameManager:
                 GameManager.running = False
 
     def update(self):
-        pass
+        Button.update()
 
     def render(self):
         GameManager.screen.fill(Color('gray'))
+        Button.render()
         pygame.display.update()
