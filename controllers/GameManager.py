@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
-from PlayerManager import PlayerManager
+from controllers.PlayerManager import PlayerManager
+from models.constants import *
 
 class GameManager:
     def __init__(self):
@@ -24,13 +25,9 @@ class GameManager:
                 GameManager.running = False
 
     def update(self):
-        GameManager.deltaTime = GameManager.clock.tick()
-
-        print(GameManager.deltaTime)
+        GameManager.deltaTime = GameManager.clock.tick(200) / 1000
 
     def render(self):
-        GameManager.screen.fill(Color('lime'))
-
-
+        GameManager.screen.fill(BACKGROUND_COLOR)
 
         pygame.display.update()
