@@ -7,10 +7,11 @@ class Button:
     def __init__(self, imgPath, dest:Rect=Rect(0, 0, 100, 100))->None:
         self.displaySurf = pygame.display.get_surface()
         self.sprite = pygame.image.load(imgPath).convert_alpha()
+        self.sprite = pygame.transform.scale(self.sprite, (dest.w,dest.h))
         self.dest = dest
         self.onClick = None
         self.previously_clicked = False
-        self.rect = pygame.Rect(0,0,0,0)
+        self.rect = dest
 
     def bind(self, to)->None:
         self.onClick = to
@@ -20,6 +21,8 @@ class Button:
             if self.onClick and not self.previously_clicked:
                 self.previously_clicked = True
                 self.onClick()
+                #Pas sur de ce que je fais mais j'active la fonction associée au bouton
+                
         else:
             self.previously_clicked = False
 
@@ -29,3 +32,6 @@ class Button:
             return
 
         self.rect = self.displaySurf.blit(self.sprite, self.dest)
+
+    def resize(self,h,w)->None:
+        self.sprite = pygame.transform.scale(self.sprite, (w,h))

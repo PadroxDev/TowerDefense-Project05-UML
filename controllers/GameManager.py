@@ -5,15 +5,15 @@ from controllers.PlayerManager import PlayerManager
 from models.constants import *
 
 class GameManager:
-    def __init__(self):
+    def __init__(self, screen):
         pygame.init()
-        GameManager.screen = pygame.display.set_mode((1280, 720))
+        GameManager.screen = screen
         GameManager.player = PlayerManager()
         GameManager.clock = pygame.time.Clock()
         GameManager.deltaTime = 0
         GameManager.running = True
 
-        self.buttonTest = Button("res/sprites/button_sprite_test.png", Rect(100, 100, 200, 200))
+        self.buttonTest = Button("res/sprites/button/button_sprite_test.png", Rect(100, 100, 200, 200))
 
     def run(self):
         while GameManager.running:
@@ -35,5 +35,6 @@ class GameManager:
         GameManager.screen.fill(BACKGROUND_COLOR)
 
         self.buttonTest.render()
+        self.buttonTest.update()
 
         pygame.display.update()
