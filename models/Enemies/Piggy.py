@@ -1,4 +1,4 @@
-from Enemies.Enemy import Enemy
+from models.Enemies.Enemy import Enemy
 from pygame.math import Vector2
 
 class Piggy(Enemy):
