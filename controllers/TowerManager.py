@@ -18,7 +18,6 @@ class TowerManager:
     
     def BuildTurret(self, mousePos: Vector2):
         mousePos = pygame.mouse.get_pos()
-        #Button("res/sprites/button/button_sprite_test.png", Rect(mousePos.x, mousePos.y, 200, 200))
         lancer = LancerI(mousePos - Vector2(1,1)*256*0.5)
         TowerManager.towersList.append(lancer)
 
