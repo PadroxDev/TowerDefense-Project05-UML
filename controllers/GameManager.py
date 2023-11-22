@@ -13,6 +13,7 @@ class GameManager:
         GameManager.clock = pygame.time.Clock()
         GameManager.deltaTime = 0
         GameManager.running = True
+        GameManager.towerManager = TowerManager()
 
         self.buttonTest = Button("res/sprites/button/button_sprite_test.png", Rect(100, 100, 200, 200))
 
@@ -28,16 +29,18 @@ class GameManager:
             if(event.type == QUIT):
                 GameManager.running = False
             elif(event.type == MOUSEBUTTONDOWN):
-                TowerManager.CheckIfBuildable()
+                GameManager.towerManager.CheckIfBuildable()
 
 
     def update(self):
         GameManager.deltaTime = GameManager.clock.tick(200) / 1000
         self.buttonTest.update()
+        self.towerManager.update(self.deltaTime)
 
     def render(self):
         GameManager.screen.fill(BACKGROUND_COLOR)
 
         self.buttonTest.render()
+        self.towerManager.render()
 
         pygame.display.update()

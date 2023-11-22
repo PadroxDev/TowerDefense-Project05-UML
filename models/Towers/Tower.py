@@ -28,7 +28,7 @@ class TowerBase:
         self.attackDebounce += dT
         if(self.canAttack()):
             self.attackDebounce -= self.asp
-            self.attack()
+            self.attack([])
 
     def findTarget(self, enemies: list):
         nearestTarget = None
