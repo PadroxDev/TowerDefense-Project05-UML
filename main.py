@@ -1,5 +1,5 @@
 import pygame
-from controllers.GameManager import GameManager
+# from controllers.GameManager import GameManager
 from models.Window import Window
 
 if __name__ == "__main__":

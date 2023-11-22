@@ -21,7 +21,6 @@ class Button:
             if self.onClick and not self.previously_clicked:
                 self.previously_clicked = True
                 self.onClick()
-                #Pas sur de ce que je fais mais j'active la fonction associée au bouton
                 
         else:
             self.previously_clicked = False

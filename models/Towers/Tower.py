@@ -7,8 +7,10 @@ class TargetMode(Enum):
     Last = 2
     Strongest = 3
     Weakest = 4
+    Nearest = 5
+    Furthest = 6
 
-class Tower:
+class TowerBase:
     def __init__(self, position: Vector2, price: int, range: float, damage: float, asp: float, targetMode: TargetMode, level: int):
         self.position = position
         self.price = price
@@ -17,12 +19,35 @@ class Tower:
         self.asp = asp
         self.targetMode = targetMode
         self.level = level
+        self.attackDebounce = asp
+
+    def canAttack(self):
+        return self.attackDebounce >= self.asp
+
+    def update(self, dT: float):
+        self.attackDebounce += dT
+        target: Enemy = self.findTarget([])
+        if(self.canAttack() and target is not None):
+            self.attackDebounce -= self.asp
+            self.attack(target, [])
+
+    def findTarget(self, enemies: list):
+        nearestTarget = None
+        targetDistance = self.range + 1
+        for enemy in enemies:
+            distance = (enemy.position - self.position).magnitude()
+            if(distance > self.range and distance >= targetDistance): continue
+
+            nearestTarget = enemy
+            targetDistance = distance
+        
+        return nearestTarget
 
     def attack(self, target: Enemy):
-        pass
+        print("Attack Method wasn't overrided !")
 
-    def findTarget(self):
-        pass
+    def render(self):
+        print("Render method wasn't overrided !")
 
     def upgrade(self):
         pass
