@@ -41,6 +41,6 @@ class GameManager:
         GameManager.screen.fill(BACKGROUND_COLOR)
 
         self.buttonTest.render()
-        self.towerManager.render()
+        self.towerManager.render(self.screen)
 
         pygame.display.update()
