@@ -48,8 +48,6 @@ class GameManager:
         for i in range(len(Path)-1):
             p1 = Path[i]
             p2 = Path[i+1]
-            pygame.draw.line(self.screen, Color(0,0,0), p1, p2, 16)
-            print(p1)
-        
+            pygame.draw.line(self.screen, Color(212, 123, 74), p1, p2, 16)
 
         pygame.display.update()
