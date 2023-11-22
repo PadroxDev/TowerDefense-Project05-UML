@@ -4,6 +4,7 @@ from pygame.math import Vector2
 from controllers.Button import Button
 from controllers.PlayerManager import PlayerManager
 from controllers.TowerManager import TowerManager
+from controllers.EventManager import EventManager
 from models.constants import *
 from models.Map import Path
 
@@ -16,6 +17,7 @@ class GameManager:
         GameManager.deltaTime = 0
         GameManager.running = True
         GameManager.towerManager = TowerManager()
+        GameManager.eventManager = EventManager()
 
         self.buttonTest = Button("res/sprites/button/button_sprite_test.png", Rect(100, 100, 200, 200))
 
@@ -37,17 +39,19 @@ class GameManager:
     def update(self):
         GameManager.deltaTime = GameManager.clock.tick(200) / 1000
         self.buttonTest.update()
+        self.eventManager.update(self.deltaTime)
         self.towerManager.update(self.deltaTime)
 
     def render(self):
         GameManager.screen.fill(BACKGROUND_COLOR)
 
-        self.buttonTest.render()
-        self.towerManager.render(self.screen)
-
         for i in range(len(Path)-1):
             p1 = Path[i]
             p2 = Path[i+1]
             pygame.draw.line(self.screen, Color(212, 123, 74), p1, p2, 16)
+
+        self.buttonTest.render()
+        self.eventManager.render(self.screen)
+        self.towerManager.render(self.screen)
 
         pygame.display.update()

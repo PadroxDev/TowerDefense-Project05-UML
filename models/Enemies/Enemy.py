@@ -11,7 +11,7 @@ class Enemy:
         self.dropMoney = dropMoney
         self.currentWaypoint = 0
 
-    def moveTowardsWaypoint(self, dT):
+    def moveTowardsWaypoint(self, dT: float):
         waypoint: Vector2 = Path[self.currentWaypoint]
         dir: Vector2 = (waypoint - self.position).normalize()
         self.position += dir * self.speed * dT
