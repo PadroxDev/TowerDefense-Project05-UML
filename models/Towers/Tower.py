@@ -26,9 +26,10 @@ class TowerBase:
 
     def update(self, dT: float):
         self.attackDebounce += dT
-        if(self.canAttack()):
+        target: Enemy = self.findTarget([])
+        if(self.canAttack() and target is not None):
             self.attackDebounce -= self.asp
-            self.attack()
+            self.attack(target, [])
 
     def findTarget(self, enemies: list):
         nearestTarget = None

@@ -17,8 +17,7 @@ class LancerI(TowerBase):
         super().__init__(position, self.Price, self.Range, self.Damage, self.ASP, self.TargetMode, 0)
         self.image = img.load(self.SpritePath).convert_alpha()
 
-    def attack(self, enemies: list):
-        target: Enemy = self.findTarget(enemies)
+    def attack(self, target:Enemy, enemies: list):
         target.takeDamage(self.Damage)
 
     def render(self, surf: Surface):
