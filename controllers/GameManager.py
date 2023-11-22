@@ -13,14 +13,15 @@ class GameManager:
         GameManager.deltaTime = 0
         GameManager.running = True
 
-        self.buttonTest = Button("res/sprites/button/button_sprite_test.png", Rect(100, 100, 200, 200))
+        self.backButton = Button("res/sprites/button/back.png", Rect(20, 20, 50, 50))
+        self.backButton.bind(self.stop)
 
     def run(self):
+        GameManager.running = True
         while GameManager.running:
             self.handleEvents()
             self.update()
             self.render()
-        pygame.quit()
 
     def handleEvents(self):
         for event in pygame.event.get():
@@ -29,12 +30,15 @@ class GameManager:
 
     def update(self):
         GameManager.deltaTime = GameManager.clock.tick(200) / 1000
-        self.buttonTest.update()
+        self.backButton.update()
 
     def render(self):
         GameManager.screen.fill(BACKGROUND_COLOR)
 
-        self.buttonTest.render()
-        self.buttonTest.update()
+        self.backButton.render()
+        self.backButton.update()
 
         pygame.display.update()
+
+    def stop(self):
+        GameManager.running = False
