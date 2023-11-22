@@ -1,9 +1,11 @@
 import pygame
 from pygame.locals import *
+from pygame.math import Vector2
 from controllers.Button import Button
 from controllers.PlayerManager import PlayerManager
 from controllers.TowerManager import TowerManager
 from models.constants import *
+from models.Map import Path
 
 class GameManager:
     def __init__(self, screen):
@@ -41,6 +43,13 @@ class GameManager:
         GameManager.screen.fill(BACKGROUND_COLOR)
 
         self.buttonTest.render()
-        self.towerManager.render()
+        self.towerManager.render(self.screen)
+
+        for i in range(len(Path)-1):
+            p1 = Path[i]
+            p2 = Path[i+1]
+            pygame.draw.line(self.screen, Color(0,0,0), p1, p2, 16)
+            print(p1)
+        
 
         pygame.display.update()

@@ -11,8 +11,8 @@ class TowerManager:
     def CheckIfBuildable(self):
         mousePos = pygame.mouse.get_pos()
         for tower in TowerManager.towersList:
-            distance = (tower.position - mousePos).magnitude()
-            if(distance <= 50):
+            distance = (tower.position + Vector2(1, 1) * 256 * 0.5 - mousePos).magnitude()
+            if(distance <= 256):
                 return False
         self.BuildTurret(mousePos)
     
@@ -26,7 +26,7 @@ class TowerManager:
         for tower in self.towersList:
             tower.update(dT)
 
-    def render(self):
+    def render(self, surf: pygame.Surface):
         for tower in self.towersList:
-            tower.render()
+            tower.render(surf)
         
