@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from controllers.Button import Button
 from controllers.PlayerManager import PlayerManager
+from controllers.TowerManager import TowerManager
 from models.constants import *
 
 class GameManager:
@@ -26,6 +27,9 @@ class GameManager:
         for event in pygame.event.get():
             if(event.type == QUIT):
                 GameManager.running = False
+            elif(event.type == MOUSEBUTTONDOWN):
+                TowerManager.CheckIfBuildable()
+
 
     def update(self):
         GameManager.deltaTime = GameManager.clock.tick(200) / 1000
@@ -35,6 +39,5 @@ class GameManager:
         GameManager.screen.fill(BACKGROUND_COLOR)
 
         self.buttonTest.render()
-        self.buttonTest.update()
 
         pygame.display.update()
