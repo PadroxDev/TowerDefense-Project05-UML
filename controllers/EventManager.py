@@ -1,5 +1,8 @@
 from models.Wave import Waves
 from models.Enemies.Piggy import Piggy
+from models.Enemies.PigKnight import PigKnight
+from models.Enemies.Iris import Iris
+from models.Money import Money
 from models.Map import Path
 from pygame import Surface
 
@@ -7,10 +10,11 @@ TIME_BEFORE_STARTING = 3
 TIME_BETWEEN_SPAWNS = 0.5
 
 class EventManager:
-    def __init__(self):
+    def __init__(self, moulaga):
         self.waveIndex = 0
         self.mobIndex = 0
         self.enemiesAlive = []
+        self.moulaga = moulaga
         self.waitingTime = TIME_BEFORE_STARTING
         self.doneSpawningWaves = False
 
@@ -43,12 +47,21 @@ class EventManager:
             reachedEndOfPath = enemy.moveTowardsWaypoint(dT)
             if(reachedEndOfPath or enemy.dead):
                 self.enemiesAlive.remove(enemy)
+                self.moulaga.addMoney(50)
 
     def spawnEnemyFromChar(self, char):
         if(char == 'P'):
             spawnPoint = Path[0].copy()
             piggy = Piggy(spawnPoint)
             self.enemiesAlive.append(piggy)
+        if(char == 'K'):
+            spawnPoint = Path[0].copy()
+            pigknight = PigKnight(spawnPoint)
+            self.enemiesAlive.append(pigknight)
+        if(char == 'I'):
+            spawnPoint = Path[0].copy()
+            iris = Iris(spawnPoint)
+            self.enemiesAlive.append(iris)
 
     def render(self, surf: Surface):
         for enemy in self.enemiesAlive:
