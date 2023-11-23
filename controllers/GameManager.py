@@ -22,6 +22,10 @@ class GameManager:
         self.backButton = Button("res/sprites/button/back.png", Rect(20, 20, 50, 50))
         self.backButton.bind(self.stop)
 
+        self.listeButton = []
+        self.listeButton.append(Button("res/sprites/button/button_sprite_test.png", Rect(1200, 650, 40, 40)))
+        self.BindButton(0,GameManager.towerManager.PlaceHighlightLancer)
+
     def run(self):
         GameManager.running = True
         while GameManager.running:
@@ -34,7 +38,7 @@ class GameManager:
             if(event.type == QUIT):
                 GameManager.running = False
             elif(event.type == MOUSEBUTTONDOWN):
-                GameManager.towerManager.CheckIfBuildable()
+                GameManager.towerManager.createTurret()
 
 
     def update(self):
@@ -42,6 +46,9 @@ class GameManager:
         self.backButton.update()
         self.eventManager.update(self.deltaTime)
         self.towerManager.update(self.deltaTime)
+
+        for button in self.listeButton :
+            button.update()
 
     def render(self):
         GameManager.screen.fill(BACKGROUND_COLOR)
@@ -52,6 +59,9 @@ class GameManager:
             p1 = Path[i]
             p2 = Path[i+1]
             pygame.draw.line(self.screen, Color(212, 123, 74), p1, p2, 16)
+
+        for button in self.listeButton :
+            button.render()
             
         self.eventManager.render(self.screen)
         self.towerManager.render(self.screen)
@@ -60,3 +70,6 @@ class GameManager:
 
     def stop(self):
         GameManager.running = False
+
+    def BindButton(self, index:int, function):
+        self.listeButton[index].bind(function)

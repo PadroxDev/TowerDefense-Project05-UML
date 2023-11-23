@@ -6,4 +6,4 @@ class Piggy(Enemy):
     speed = 50
     dropMoney = 10
     def __init__(self, pos: Vector2) -> None:
-        super().__init__(pos, Piggy.hp, Piggy.speed, Piggy.dropMoney)
+        super().__init__(pos, Piggy.hp, Piggy.speed, Piggy.dropMoney, 1)
