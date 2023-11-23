@@ -57,6 +57,7 @@ class GameManager:
         self.eventManager.update(self.deltaTime)
         self.towerManager.update(self.deltaTime, self.eventManager.enemiesAlive)
         self.money.update()
+        self.backButton.update()
 
         for button in self.listeButton :
             button.update()
@@ -66,11 +67,13 @@ class GameManager:
         GameManager.screen.blit(self.background, (0,0))
 
         self.backButton.render()
-        self.backButton.update()
             
         self.eventManager.render(self.screen)
         self.towerManager.render(self.screen)
         self.money.render(self.screen)
+        
+        for button in self.listeButton:
+            button.render()
 
         pygame.display.update()
 
