@@ -5,6 +5,7 @@ from controllers.Button import Button
 from controllers.PlayerManager import PlayerManager
 from controllers.TowerManager import TowerManager
 from controllers.EventManager import EventManager
+from models.Money import Money
 from models.constants import *
 from models.Map import Path
 
@@ -16,8 +17,9 @@ class GameManager:
         GameManager.clock = pygame.time.Clock()
         GameManager.deltaTime = 0
         GameManager.running = True
-        GameManager.towerManager = TowerManager()
-        GameManager.eventManager = EventManager()
+        GameManager.money = Money(450)
+        GameManager.towerManager = TowerManager(self.money)
+        GameManager.eventManager = EventManager(self.money)
 
         self.background = pygame.image.load("res/sprites/map.png")
         self.background = pygame.transform.scale(self.background, (1280, 720))
@@ -46,6 +48,7 @@ class GameManager:
         self.backButton.update()
         self.eventManager.update(self.deltaTime)
         self.towerManager.update(self.deltaTime, self.eventManager.enemiesAlive)
+        self.money.update()
 
     def render(self):
         GameManager.screen.fill([255, 255, 255])
@@ -53,14 +56,10 @@ class GameManager:
 
         self.backButton.render()
         self.backButton.update()
-
-        for i in range(len(Path)-1):
-            p1 = Path[i]
-            p2 = Path[i+1]
-            pygame.draw.line(self.screen, Color(255, 255, 255), p1, p2, 16)
             
         self.eventManager.render(self.screen)
         self.towerManager.render(self.screen)
+        self.money.render(self.screen)
 
         pygame.display.update()
 

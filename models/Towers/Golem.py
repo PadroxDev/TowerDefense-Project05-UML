@@ -11,7 +11,7 @@ class GolemI(TowerBase):
     Damage = 20.0
     ASP = 4
     TargetMode = TargetMode.Nearest
-    SpritePath = "res/sprites/towers/Golem.gif"
+    SpritePath = "res/sprites/towers/Golem.png"
 
     def __init__(self, position: Vector2):
         super().__init__(position, self.Price, self.Range, self.Damage, self.ASP, self.TargetMode, 0)

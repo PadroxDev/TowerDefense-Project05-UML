@@ -7,8 +7,9 @@ from models.Towers.Wizard import WizardI
 import pygame
 
 class TowerManager:
-    def __init__(self) -> None:
+    def __init__(self, money) -> None:
         TowerManager.towersList = []
+        self.money = money
 
     def CheckIfBuildable(self):
         mousePos: Vector2 = pygame.mouse.get_pos()
@@ -24,6 +25,7 @@ class TowerManager:
         archer = ArcherI(mousePos)
         wizard = WizardI(mousePos)
         TowerManager.towersList.append(lancer)
+        self.money.removeMoney(lancer.price)
 
     def update(self, dT, enemies):
         for tower in self.towersList:

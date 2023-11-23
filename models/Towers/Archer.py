@@ -12,7 +12,7 @@ class ArcherI(TowerBase):
     Damage = 20.0
     ASP = 0.25
     TargetMode = TargetMode.Nearest
-    SpritePath = "res/sprites/towers/archer.gif"
+    SpritePath = "res/sprites/towers/Archer.png"
 
     def __init__(self, position: Vector2):
         super().__init__(position, self.Price, self.Range, self.Damage, self.ASP, self.TargetMode, 0)
