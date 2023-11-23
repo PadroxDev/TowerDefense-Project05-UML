@@ -7,8 +7,9 @@ from models.Towers.Wizard import WizardI
 import pygame
 
 class TowerManager:
-    def __init__(self) -> None:
+    def __init__(self, money) -> None:
         TowerManager.towersList = []
+        self.money = money
         TowerManager.towersListTemp = []
 
     def CheckIfBuildable(self):
@@ -19,8 +20,14 @@ class TowerManager:
                 return False
         return True
         #self.BuildTurret(mousePos)
-    
-
+        
+    def BuildTurret(self, mousePos: Vector2):
+        mousePos = pygame.mouse.get_pos()
+        lancer = GolemI(mousePos)
+        archer = ArcherI(mousePos)
+        wizard = WizardI(mousePos)
+        TowerManager.towersList.append(lancer)
+        self.money.removeMoney(lancer.price)
     # def BuildTurret(self, mousePos: Vector2):
     #     mousePos = pygame.mouse.get_pos()
     #     lancer = LancerI(mousePos - Vector2(1,1)*256*0.5)
@@ -31,8 +38,7 @@ class TowerManager:
     #     unit = None
     #     archer = ArcherI(mousePos)
     #     wizard = WizardI(mousePos)
-
-    #     TowerManager.towersList.append(unit)
+    #     TowerManager.towersList.append(lancer)
 
     def update(self, dT, enemies):
         for tower in self.towersList:

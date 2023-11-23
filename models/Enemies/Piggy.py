@@ -16,4 +16,4 @@ class Piggy(Enemy):
         self.image = load(self.PiggySprite).convert_alpha()
 
     def render(self, surf: Surface):
-        surf.blit(self.image, self.position - Vector2(1, 1) * 288 * 0.5)
+        surf.blit(self.image, self.position - Vector2(1, 1) * 125)
