@@ -11,13 +11,12 @@ class Enemy:
         self.speed = speed
         self.dropMoney = dropMoney
         self.currentWaypoint = 0
+        self.dead = False
 
     def moveTowardsWaypoint(self, dT: float):
         waypoint: Vector2 = Path[self.currentWaypoint].copy()
         dir: Vector2 = (waypoint - self.position)
         if(dir!=Vector2(0,0)): dir = dir.normalize()
-        self.p1 = self.position
-        self.p2 = self.position + dir * 30
         self.position += dir * self.speed * dT
 
         distance = (waypoint - self.position).magnitude()
@@ -32,6 +31,7 @@ class Enemy:
 
     def takeDamage(self, damage):
         self.hp -= damage
+        self.dead = True
 
     def render(self, surf: Surface):
         pass

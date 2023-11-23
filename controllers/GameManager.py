@@ -44,7 +44,7 @@ class GameManager:
         GameManager.deltaTime = GameManager.clock.tick(200) / 1000
         self.backButton.update()
         self.eventManager.update(self.deltaTime)
-        self.towerManager.update(self.deltaTime)
+        self.towerManager.update(self.deltaTime, self.eventManager.enemiesAlive)
 
     def render(self):
         GameManager.screen.fill([255, 255, 255])

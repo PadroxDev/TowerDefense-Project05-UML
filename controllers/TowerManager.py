@@ -11,9 +11,9 @@ class TowerManager:
         TowerManager.towersList = []
 
     def CheckIfBuildable(self):
-        mousePos = pygame.mouse.get_pos()
+        mousePos: Vector2 = pygame.mouse.get_pos()
         for tower in TowerManager.towersList:
-            distance = (tower.position + Vector2(1, 1) * 256 * 0.5 - mousePos).magnitude()
+            distance = (tower.position - Vector2(mousePos)).magnitude()
             if(distance <= 256):
                 return False
         self.BuildTurret(mousePos)
@@ -25,9 +25,9 @@ class TowerManager:
         wizard = WizardI(mousePos - Vector2(1,1)*256*0.5)
         TowerManager.towersList.append(archer)
 
-    def update(self, dT):
+    def update(self, dT, enemies):
         for tower in self.towersList:
-            tower.update(dT)
+            tower.update(dT, enemies)
 
     def render(self, surf: pygame.Surface):
         for tower in self.towersList:
