@@ -4,7 +4,7 @@ from models.Map import Path
 from pygame import Surface
 
 TIME_BEFORE_STARTING = 3
-TIME_BETWEEN_SPAWNS = 1
+TIME_BETWEEN_SPAWNS = 2
 
 class EventManager:
     def __init__(self):
@@ -36,13 +36,12 @@ class EventManager:
 
             # Check if it was the last wave
             if(self.waveIndex == len(Waves)):
-                print("Done spawning")
                 self.doneSpawningWaves = True
 
     def updateEnemies(self, dT: float):
         for enemy in self.enemiesAlive:
             reachedEndOfPath = enemy.moveTowardsWaypoint(dT)
-            if(reachedEndOfPath):
+            if(reachedEndOfPath or enemy.dead):
                 self.enemiesAlive.remove(enemy)
 
     def spawnEnemyFromChar(self, char):

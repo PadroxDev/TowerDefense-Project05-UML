@@ -17,4 +17,3 @@ class Piggy(Enemy):
 
     def render(self, surf: Surface):
         surf.blit(self.image, self.position - Vector2(1, 1) * 288 * 0.5)
-        draw.line(surf, Color(0, 255, 0), self.p1, self.p2)
