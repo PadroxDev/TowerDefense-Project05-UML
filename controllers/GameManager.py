@@ -27,6 +27,14 @@ class GameManager:
         self.backButton = Button("res/sprites/button/back.png", Rect(20, 20, 50, 50))
         self.backButton.bind(self.stop)
 
+        self.listeButton = []
+        self.listeButton.append(Button("res/sprites/button/button_sprite_test.png", Rect(1200, 650, 40, 40)))
+        self.BindButton(0,GameManager.towerManager.createGolem)
+        self.listeButton.append(Button("res/sprites/button/button_sprite_test.png", Rect(1150, 650, 40, 40)))
+        self.BindButton(1,GameManager.towerManager.createArcher)
+        self.listeButton.append(Button("res/sprites/button/button_sprite_test.png", Rect(1100, 650, 40, 40)))
+        self.BindButton(2,GameManager.towerManager.createWizard)
+
     def run(self):
         GameManager.running = True
         while GameManager.running:
@@ -38,9 +46,9 @@ class GameManager:
         for event in pygame.event.get():
             if(event.type == QUIT):
                 GameManager.running = False
+                pygame.quit()
             elif(event.type == MOUSEBUTTONDOWN):
-                GameManager.towerManager.CheckIfBuildable()
-                print(pygame.mouse.get_pos())
+                GameManager.towerManager.createTurret()
 
 
     def update(self):
@@ -50,12 +58,26 @@ class GameManager:
         self.towerManager.update(self.deltaTime, self.eventManager.enemiesAlive)
         self.money.update()
 
+        for button in self.listeButton :
+            button.update()
+
     def render(self):
         GameManager.screen.fill([255, 255, 255])
         GameManager.screen.blit(self.background, (0,0))
 
         self.backButton.render()
         self.backButton.update()
+<<<<<<< HEAD
+=======
+
+        for i in range(len(Path)-1):
+            p1 = Path[i]
+            p2 = Path[i+1]
+            pygame.draw.line(self.screen, Color(255, 255, 255), p1, p2, 16)
+
+        for button in self.listeButton :
+            button.render()
+>>>>>>> 39bc9e86436749760d6a983e95009cfff268a466
             
         self.eventManager.render(self.screen)
         self.towerManager.render(self.screen)
@@ -65,3 +87,6 @@ class GameManager:
 
     def stop(self):
         GameManager.running = False
+
+    def BindButton(self, index:int, function):
+        self.listeButton[index].bind(function)
