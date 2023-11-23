@@ -4,6 +4,7 @@ from pygame.math import Vector2
 from pygame import Surface, Color
 import pygame.draw as draw
 import pygame.transform as ouryel
+import pygame.mouse as mouse
 
 class TargetMode(Enum):
     First = 1
@@ -28,7 +29,7 @@ class TowerBase:
         self.redImage : Surface
 
     def resizeImage(self):
-        self.image = ouryel.scale(self.image, Vector2(1, 1) * 200)
+        self.currentImage = ouryel.scale(self.currentImage, Vector2(1, 1) * 200)
 
     def canAttack(self):
         return self.attackDebounce >= self.asp
@@ -62,7 +63,7 @@ class TowerBase:
     def upgrade(self):
         pass
 
-    def render(self, surf: pygame.Surface):
+    def render(self, surf: Surface):
         surf.blit(self.currentImage, self.position)
 
     def SetRedimage(self):
@@ -83,5 +84,5 @@ class TowerBase:
         self.currentImage.set_alpha(alpha)
 
     def updatePosition(self):
-        mousePos = pygame.mouse.get_pos()
+        mousePos = mouse.get_pos()
         self.position = Vector2(mousePos[0]-(self.imageRect.w//2) ,mousePos[1] - (self.imageRect.h//2))
