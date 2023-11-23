@@ -19,6 +19,9 @@ class GameManager:
         GameManager.towerManager = TowerManager()
         GameManager.eventManager = EventManager()
 
+        self.background = pygame.image.load("res/sprites/map.png")
+        self.background = pygame.transform.scale(self.background, (1280, 720))
+
         self.backButton = Button("res/sprites/button/back.png", Rect(20, 20, 50, 50))
         self.backButton.bind(self.stop)
 
@@ -44,7 +47,8 @@ class GameManager:
         self.towerManager.update(self.deltaTime)
 
     def render(self):
-        GameManager.screen.fill(BACKGROUND_COLOR)
+        GameManager.screen.fill([255, 255, 255])
+        GameManager.screen.blit(self.background, (0,0))
 
         self.backButton.render()
         self.backButton.update()
@@ -52,7 +56,7 @@ class GameManager:
         for i in range(len(Path)-1):
             p1 = Path[i]
             p2 = Path[i+1]
-            pygame.draw.line(self.screen, Color(212, 123, 74), p1, p2, 16)
+            pygame.draw.line(self.screen, Color(255, 255, 255), p1, p2, 16)
             
         self.eventManager.render(self.screen)
         self.towerManager.render(self.screen)
