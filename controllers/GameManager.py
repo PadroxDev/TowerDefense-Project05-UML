@@ -26,11 +26,11 @@ class GameManager:
         self.backButton.bind(self.stop)
 
         self.listeButton = []
-        self.listeButton.append(Button("res/sprites/button/button_sprite_test.png", Rect(1200, 650, 40, 40)))
+        self.listeButton.append(Button("res/sprites/button/golem_button.png", Rect(1150, 600, 80, 80)))
         self.BindButton(0,GameManager.towerManager.createGolem)
-        self.listeButton.append(Button("res/sprites/button/button_sprite_test.png", Rect(1150, 650, 40, 40)))
+        self.listeButton.append(Button("res/sprites/button/archer_button.png", Rect(1060, 600, 80, 80)))
         self.BindButton(1,GameManager.towerManager.createArcher)
-        self.listeButton.append(Button("res/sprites/button/button_sprite_test.png", Rect(1100, 650, 40, 40)))
+        self.listeButton.append(Button("res/sprites/button/wizard_button.png", Rect(970, 600, 80, 80)))
         self.BindButton(2,GameManager.towerManager.createWizard)
 
     def run(self):
