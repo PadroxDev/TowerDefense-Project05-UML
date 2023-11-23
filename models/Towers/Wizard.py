@@ -24,6 +24,7 @@ class WizardI(TowerBase):
         self.resizeImage()
 
     def attack(self, target:Enemy, enemies: list):
+        super().attack(target)
         self.impactPos = target.position
         for enemy in enemies:
             distance = (enemy.position - self.position).magnitude()

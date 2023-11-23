@@ -7,7 +7,7 @@ class Difficulty(Enum):
     Nightmare = 3
 
 Waves = [
-    "PPPPPPPP",
+    "PPPPPPPPKKKKKIIIIIIPPPPPP",
     "PPPPKPPKKPKPKKPPP",
     "PKKPPPKKKKPPKKKIPK",
     "IIKPPPKIKIIIPIIKKI",

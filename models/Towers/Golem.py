@@ -26,15 +26,12 @@ class GolemI(TowerBase):
         self.angle = 0
         self.dir = Vector2(0, 0)
         self.currentTarget = States.SearchingForTarget
-        self.resizeImage()
         self.redImage = img.load(self.SpritePath).convert_alpha()
         self.currentImage = self.normalImage
         self.imageRect = self.normalImage.get_rect()
+        self.resizeImage()
 
     def attack(self, target:Enemy, enemies: list):
-        dir: Vector2 = (target.position - self.position)
-        if(dir != Vector2(0,0)): dir = dir.normalize()
-        self.dir = dir.copy()
-        self.angle = math.degrees(math.atan2(dir.y, dir.x))
+        super().attack(target)
         target.takeDamage(self.Damage)
 

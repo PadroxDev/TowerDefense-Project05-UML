@@ -23,4 +23,5 @@ class ArcherI(TowerBase):
         self.resizeImage()
 
     def attack(self, target:Enemy, enemies: list):
+        super().attack(target)
         target.takeDamage(self.Damage)

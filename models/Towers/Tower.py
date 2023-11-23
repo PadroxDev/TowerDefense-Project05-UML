@@ -1,10 +1,11 @@
 from enum import Enum
 from models.Enemies.Enemy import Enemy
 from pygame.math import Vector2
-from pygame import Surface, Color
+from pygame import Surface, Color, BLEND_ADD
 import pygame.draw as draw
 import pygame.transform as ouryel
 import pygame.mouse as mouse
+import math
 
 class TargetMode(Enum):
     First = 1
@@ -27,9 +28,12 @@ class TowerBase:
         self.currentImage : Surface
         self.normalImage : Surface
         self.redImage : Surface
+        self.angle = 180
 
     def resizeImage(self):
         self.currentImage = ouryel.scale(self.currentImage, Vector2(1, 1) * 200)
+        self.normalImage = ouryel.scale(self.normalImage, Vector2(1, 1) * 200)
+        self.redImage = ouryel.scale(self.redImage, Vector2(1, 1) * 200)
 
     def canAttack(self):
         return self.attackDebounce >= self.asp
@@ -54,7 +58,11 @@ class TowerBase:
         return nearestTarget
 
     def attack(self, target: Enemy):
-        print("Attack Method wasn't overrided !")
+        dir: Vector2 = (target.position - self.position)
+        if(dir != Vector2(0,0)): dir = dir.normalize()
+        self.dir = dir.copy()
+        self.angle = math.degrees(math.atan2(dir.y, dir.x))
+        print(self.angle)
 
     def render(self, surf: Surface):
         draw.circle(surf, Color(255, 255, 255, 30), self.position, self.range, 2)
@@ -64,15 +72,11 @@ class TowerBase:
         pass
 
     def render(self, surf: Surface):
-        surf.blit(self.currentImage, self.position)
+        rotatedImage = ouryel.rotate(self.currentImage, self.angle)
+        surf.blit(rotatedImage, self.position)
 
     def SetRedimage(self):
-        for x in range(self.currentImage.get_width()):
-            for y in range(self.currentImage.get_height()):
-                pixel_color = self.currentImage.get_at((x, y))
-                # Appliquer le filtre rouge en augmentant la composante rouge
-                new_color = (min(pixel_color[0] + 100, 255), pixel_color[1], pixel_color[2])
-                self.redImage.set_at((x, y), new_color)
+        self.redImage.fill(Color(255, 0, 0), None, BLEND_ADD)
     
     def changeRed(self):
         self.currentImage = self.redImage
@@ -85,4 +89,4 @@ class TowerBase:
 
     def updatePosition(self):
         mousePos = mouse.get_pos()
-        self.position = Vector2(mousePos[0]-(self.imageRect.w//2) ,mousePos[1] - (self.imageRect.h//2))
+        self.position = Vector2(mousePos[0]-(100) ,mousePos[1] - (100))
