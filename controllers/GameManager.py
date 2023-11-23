@@ -8,6 +8,7 @@ from controllers.EventManager import EventManager
 from models.Money import Money
 from models.constants import *
 from models.Map import Path
+from controllers.PlayerManager import PlayerManager
 
 class GameManager:
     def __init__(self, screen):
@@ -17,9 +18,9 @@ class GameManager:
         GameManager.clock = pygame.time.Clock()
         GameManager.deltaTime = 0
         GameManager.running = True
-        GameManager.money = Money(450)
-        GameManager.towerManager = TowerManager(self.money)
-        GameManager.eventManager = EventManager(self.money)
+        GameManager.player = PlayerManager()
+        GameManager.towerManager = TowerManager(self.player)
+        GameManager.eventManager = EventManager(self.player)
 
         self.background = pygame.image.load("res/sprites/map.png")
         self.background = pygame.transform.scale(self.background, (1280, 720))
@@ -28,12 +29,13 @@ class GameManager:
         self.backButton.bind(self.stop)
 
         self.listeButton = []
+        
+        self.listeButton.append(Button("res/sprites/button/archer_button.png", Rect(970, 600, 80, 80)))
+        self.BindButton(0,GameManager.towerManager.createArcher)
+        self.listeButton.append(Button("res/sprites/button/wizard_button.png", Rect(1060, 600, 80, 80)))
+        self.BindButton(1,GameManager.towerManager.createWizard)
         self.listeButton.append(Button("res/sprites/button/golem_button.png", Rect(1150, 600, 80, 80)))
-        self.BindButton(0,GameManager.towerManager.createGolem)
-        self.listeButton.append(Button("res/sprites/button/archer_button.png", Rect(1060, 600, 80, 80)))
-        self.BindButton(1,GameManager.towerManager.createArcher)
-        self.listeButton.append(Button("res/sprites/button/wizard_button.png", Rect(970, 600, 80, 80)))
-        self.BindButton(2,GameManager.towerManager.createWizard)
+        self.BindButton(2,GameManager.towerManager.createGolem)
 
     def run(self):
         GameManager.running = True
@@ -56,7 +58,7 @@ class GameManager:
         self.backButton.update()
         self.eventManager.update(self.deltaTime)
         self.towerManager.update(self.deltaTime, self.eventManager.enemiesAlive)
-        self.money.update()
+        self.player.money.update()
         self.backButton.update()
 
         for button in self.listeButton :
@@ -70,7 +72,7 @@ class GameManager:
             
         self.eventManager.render(self.screen)
         self.towerManager.render(self.screen)
-        self.money.render(self.screen)
+        self.player.money.render(self.screen)
         
         for button in self.listeButton:
             button.render()

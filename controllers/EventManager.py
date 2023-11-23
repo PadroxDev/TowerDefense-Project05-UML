@@ -10,11 +10,11 @@ TIME_BEFORE_STARTING = 3
 TIME_BETWEEN_SPAWNS = 0.5
 
 class EventManager:
-    def __init__(self, moulaga):
+    def __init__(self, player):
         self.waveIndex = 0
         self.mobIndex = 0
         self.enemiesAlive = []
-        self.moulaga = moulaga
+        self.player = player
         self.waitingTime = TIME_BEFORE_STARTING
         self.doneSpawningWaves = False
 
@@ -45,9 +45,12 @@ class EventManager:
     def updateEnemies(self, dT: float):
         for enemy in self.enemiesAlive:
             reachedEndOfPath = enemy.moveTowardsWaypoint(dT)
-            if(reachedEndOfPath or enemy.dead):
+            if(reachedEndOfPath):
                 self.enemiesAlive.remove(enemy)
-                self.moulaga.addMoney(50)
+            elif enemy.dead :
+                self.player.addMoney(enemy.dropMoney)
+                self.enemiesAlive.remove(enemy)
+                
 
     def spawnEnemyFromChar(self, char):
         if(char == 'P'):

@@ -7,31 +7,29 @@ from models.Towers.Wizard import WizardI
 import pygame
 
 class TowerManager:
-    def __init__(self, money) -> None:
+    def __init__(self, player) -> None:
         TowerManager.towersList = []
-        self.money = money
+        TowerManager.player = player
         TowerManager.towersListTemp = []
 
-    def CheckIfBuildable(self):
+    def CheckIfBuildable(self, tower ):
         mousePos: Vector2 = pygame.mouse.get_pos()
         for tower in TowerManager.towersList:
             distance = (tower.position - Vector2(mousePos)).magnitude()
             if(distance <= 130):
                 return False
+        if (tower.price > TowerManager.player.money.money):
+            return False
         return True
         #self.BuildTurret(mousePos)
         
-    def BuildTurret(self, mousePos: Vector2):
-        mousePos = pygame.mouse.get_pos()
-        lancer = GolemI(mousePos)
-        archer = ArcherI(mousePos)
-        wizard = WizardI(mousePos)
-        TowerManager.towersList.append(lancer)
-        self.money.removeMoney(lancer.price)
     # def BuildTurret(self, mousePos: Vector2):
     #     mousePos = pygame.mouse.get_pos()
-    #     lancer = LancerI(mousePos - Vector2(1,1)*256*0.5)
+    #     lancer = GolemI(mousePos)
+    #     archer = ArcherI(mousePos)
+    #     wizard = WizardI(mousePos)
     #     TowerManager.towersList.append(lancer)
+    #     self.money.removeMoney(lancer.price)
 
     # def BuildTurret(self, mousePos: Vector2):
     #     mousePos = pygame.mouse.get_pos()
@@ -45,7 +43,6 @@ class TowerManager:
             tower.update(dT, enemies)
         
         for tower in self.towersListTemp:
-            tower.update(dT, enemies)
             tower.updatePosition()
             self.updateColor()
 
@@ -63,16 +60,20 @@ class TowerManager:
         TowerManager.towersListTemp[0].SetRedimage()
 
     def createTurret(self):
-        if(self.CheckIfBuildable() and len(TowerManager.towersListTemp) != 0):
-            TowerManager.towersList.append(TowerManager.towersListTemp[0])
-            TowerManager.towersList[-1].setOpacity(255)
-            TowerManager.towersListTemp.pop()
+        if len(TowerManager.towersListTemp) != 0 :
+            if(self.CheckIfBuildable(TowerManager.towersListTemp[0])):
+                TowerManager.towersList.append(TowerManager.towersListTemp[0])
+                TowerManager.towersList[-1].setOpacity(255)
+                TowerManager.player.removeMoney(TowerManager.towersListTemp[0].price)
+                TowerManager.towersListTemp.pop()
+            
 
     def updateColor(self):
-        if(self.CheckIfBuildable()):
-            TowerManager.towersListTemp[0].changeNormal()
-        else:
-            TowerManager.towersListTemp[0].changeRed()
+        if len(TowerManager.towersListTemp) != 0 :
+            if(self.CheckIfBuildable(TowerManager.towersListTemp[0])):
+                TowerManager.towersListTemp[0].changeNormal()
+            else:
+                TowerManager.towersListTemp[0].changeRed()
 
     def createGolem(self):
         if(len(self.towersListTemp)==0):
