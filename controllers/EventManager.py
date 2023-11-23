@@ -4,7 +4,7 @@ from models.Map import Path
 from pygame import Surface
 
 TIME_BEFORE_STARTING = 3
-TIME_BETWEEN_SPAWNS = 0.5
+TIME_BETWEEN_SPAWNS = 5
 
 class EventManager:
     def __init__(self):
@@ -53,7 +53,7 @@ class EventManager:
 
     def render(self, surf: Surface):
         for enemy in self.enemiesAlive:
-            enemy.render()
+            enemy.render(surf)
 
     def skipWave(self):
         pass

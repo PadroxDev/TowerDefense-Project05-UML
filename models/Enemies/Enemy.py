@@ -13,12 +13,14 @@ class Enemy:
 
     def moveTowardsWaypoint(self, dT: float):
         waypoint: Vector2 = Path[self.currentWaypoint]
-        dir: Vector2 = (waypoint - self.position).normalize()
+        dir: Vector2 = (waypoint - self.position)
+        if(dir!=Vector2(0,0)): dir = dir.normalize()
         self.position += dir * self.speed * dT
 
         distance = (waypoint - self.position).magnitude()
         if (distance > CHECKPOINT_PROXIMITY_VALIDATION):
             return False
+        print("GAY")
         
         # Increment waypoint index
         self.currentWaypoint += 1
