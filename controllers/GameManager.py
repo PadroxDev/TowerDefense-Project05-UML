@@ -19,12 +19,19 @@ class GameManager:
         GameManager.towerManager = TowerManager()
         GameManager.eventManager = EventManager()
 
+        self.background = pygame.image.load("res/sprites/map.png")
+        self.background = pygame.transform.scale(self.background, (1280, 720))
+
         self.backButton = Button("res/sprites/button/back.png", Rect(20, 20, 50, 50))
         self.backButton.bind(self.stop)
 
         self.listeButton = []
         self.listeButton.append(Button("res/sprites/button/button_sprite_test.png", Rect(1200, 650, 40, 40)))
-        self.BindButton(0,GameManager.towerManager.PlaceHighlightLancer)
+        self.BindButton(0,GameManager.towerManager.createGolem)
+        self.listeButton.append(Button("res/sprites/button/button_sprite_test.png", Rect(1150, 650, 40, 40)))
+        self.BindButton(1,GameManager.towerManager.createArcher)
+        self.listeButton.append(Button("res/sprites/button/button_sprite_test.png", Rect(1100, 650, 40, 40)))
+        self.BindButton(2,GameManager.towerManager.createWizard)
 
     def run(self):
         GameManager.running = True
@@ -37,6 +44,7 @@ class GameManager:
         for event in pygame.event.get():
             if(event.type == QUIT):
                 GameManager.running = False
+                pygame.quit()
             elif(event.type == MOUSEBUTTONDOWN):
                 GameManager.towerManager.createTurret()
 
@@ -45,20 +53,22 @@ class GameManager:
         GameManager.deltaTime = GameManager.clock.tick(200) / 1000
         self.backButton.update()
         self.eventManager.update(self.deltaTime)
-        self.towerManager.update(self.deltaTime)
+        self.towerManager.update(self.deltaTime, self.eventManager.enemiesAlive)
 
         for button in self.listeButton :
             button.update()
 
     def render(self):
-        GameManager.screen.fill(BACKGROUND_COLOR)
+        GameManager.screen.fill([255, 255, 255])
+        GameManager.screen.blit(self.background, (0,0))
 
         self.backButton.render()
         self.backButton.update()
+
         for i in range(len(Path)-1):
             p1 = Path[i]
             p2 = Path[i+1]
-            pygame.draw.line(self.screen, Color(212, 123, 74), p1, p2, 16)
+            pygame.draw.line(self.screen, Color(255, 255, 255), p1, p2, 16)
 
         for button in self.listeButton :
             button.render()

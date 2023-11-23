@@ -1,7 +1,9 @@
 from controllers.Button import Button
 from pygame.math import Vector2
 from pygame.rect import Rect
-from models.Towers.Lancer import LancerI
+from models.Towers.Golem import GolemI
+from models.Towers.Archer import ArcherI
+from models.Towers.Wizard import WizardI
 import pygame
 
 class TowerManager:
@@ -10,9 +12,9 @@ class TowerManager:
         TowerManager.towersListTemp = []
 
     def CheckIfBuildable(self):
-        mousePos = pygame.mouse.get_pos()
+        mousePos: Vector2 = pygame.mouse.get_pos()
         for tower in TowerManager.towersList:
-            distance = (tower.position + Vector2(1, 1) * 256 * 0.5 - mousePos).magnitude()
+            distance = (tower.position - Vector2(mousePos)).magnitude()
             if(distance <= 256):
                 return False
         return True
@@ -23,12 +25,19 @@ class TowerManager:
     #     lancer = LancerI(mousePos - Vector2(1,1)*256*0.5)
     #     TowerManager.towersList.append(lancer)
 
-    def update(self, dT):
+    # def BuildTurret(self, mousePos: Vector2):
+    #     mousePos = pygame.mouse.get_pos()
+    #     lancer = GolemI(mousePos)
+    #     archer = ArcherI(mousePos)
+    #     wizard = WizardI(mousePos)
+    #     TowerManager.towersList.append(lancer)
+
+    def update(self, dT, enemies):
         for tower in self.towersList:
-            tower.update(dT)
+            tower.update(dT, enemies)
         
         for tower in self.towersListTemp:
-            tower.update(dT)
+            tower.update(dT, enemies)
             tower.updatePosition()
             self.updateColor()
 
@@ -42,10 +51,8 @@ class TowerManager:
     #Code relatif au placement d'une tourelle en transparence
 
     def PlaceHighlightLancer(self):
-        if(len(self.towersListTemp)==0):
-            TowerManager.towersListTemp.append(LancerI(Vector2(1,1)))
-            TowerManager.towersListTemp[0].setOpacity(100)
-            TowerManager.towersListTemp[0].SetRedimage()
+        TowerManager.towersListTemp[0].setOpacity(100)
+        TowerManager.towersListTemp[0].SetRedimage()
 
     def createTurret(self):
         if(self.CheckIfBuildable() and len(TowerManager.towersListTemp) != 0):
@@ -58,4 +65,18 @@ class TowerManager:
             TowerManager.towersListTemp[0].changeNormal()
         else:
             TowerManager.towersListTemp[0].changeRed()
-        
+
+    def createGolem(self):
+        if(len(self.towersListTemp)==0):
+            TowerManager.towersListTemp.append(GolemI(Vector2(1,1)))
+            self.PlaceHighlightLancer()
+    
+    def createArcher(self):
+        if(len(self.towersListTemp)==0):
+            TowerManager.towersListTemp.append(ArcherI(Vector2(1,1)))
+            self.PlaceHighlightLancer()
+
+    def createWizard(self):
+        if(len(self.towersListTemp)==0):
+            TowerManager.towersListTemp.append(WizardI(Vector2(1,1)))
+            self.PlaceHighlightLancer()

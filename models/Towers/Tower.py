@@ -30,12 +30,12 @@ class TowerBase:
     def canAttack(self):
         return self.attackDebounce >= self.asp
 
-    def update(self, dT: float):
+    def update(self, dT: float, enemies: list):
         self.attackDebounce += dT
-        target: Enemy = self.findTarget([])
+        target: Enemy = self.findTarget(enemies)
         if(self.canAttack() and target is not None):
             self.attackDebounce -= self.asp
-            self.attack(target, [])
+            self.attack(target, enemies)
 
     def findTarget(self, enemies: list):
         nearestTarget = None

@@ -1,0 +1,25 @@
+from models.Towers.Tower import TowerBase, TargetMode
+from pygame.math import Vector2
+from models.Enemies.Enemy import Enemy
+import pygame.draw as draw
+import pygame.image as img
+from pygame import Surface, Color
+
+class GolemI(TowerBase):
+    Price = 650
+    Range = 300.0
+    Damage = 20.0
+    ASP = 4
+    TargetMode = TargetMode.Nearest
+    SpritePath = "res/sprites/towers/Golem.png"
+
+    def __init__(self, position: Vector2):
+        super().__init__(position, self.Price, self.Range, self.Damage, self.ASP, self.TargetMode, 0)
+        self.normalImage = img.load(self.SpritePath).convert_alpha()
+        self.redImage = img.load(self.SpritePath).convert_alpha()
+        self.currentImage = self.normalImage
+        self.imageRect = self.normalImage.get_rect()
+
+    def attack(self, target:Enemy, enemies: list):
+        target.takeDamage(self.Damage)
+
