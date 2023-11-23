@@ -16,7 +16,10 @@ class ArcherI(TowerBase):
 
     def __init__(self, position: Vector2):
         super().__init__(position, self.Price, self.Range, self.Damage, self.ASP, self.TargetMode, 0)
-        self.image = img.load(self.SpritePath).convert_alpha()
+        self.normalImage = img.load(self.SpritePath).convert_alpha()
+        self.redImage = img.load(self.SpritePath).convert_alpha()
+        self.currentImage = self.normalImage
+        self.imageRect = self.normalImage.get_rect()
         self.resizeImage()
 
     def attack(self, target:Enemy, enemies: list):

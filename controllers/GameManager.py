@@ -25,6 +25,14 @@ class GameManager:
         self.backButton = Button("res/sprites/button/back.png", Rect(20, 20, 50, 50))
         self.backButton.bind(self.stop)
 
+        self.listeButton = []
+        self.listeButton.append(Button("res/sprites/button/golem_button.png", Rect(1150, 600, 80, 80)))
+        self.BindButton(0,GameManager.towerManager.createGolem)
+        self.listeButton.append(Button("res/sprites/button/archer_button.png", Rect(1060, 600, 80, 80)))
+        self.BindButton(1,GameManager.towerManager.createArcher)
+        self.listeButton.append(Button("res/sprites/button/wizard_button.png", Rect(970, 600, 80, 80)))
+        self.BindButton(2,GameManager.towerManager.createWizard)
+
     def run(self):
         GameManager.running = True
         while GameManager.running:
@@ -36,8 +44,10 @@ class GameManager:
         for event in pygame.event.get():
             if(event.type == QUIT):
                 GameManager.running = False
+                pygame.quit()
             elif(event.type == MOUSEBUTTONDOWN):
-                GameManager.towerManager.CheckIfBuildable()
+                GameManager.towerManager.createTurret()
+
 
     def update(self):
         GameManager.deltaTime = GameManager.clock.tick(200) / 1000
@@ -45,12 +55,18 @@ class GameManager:
         self.eventManager.update(self.deltaTime)
         self.towerManager.update(self.deltaTime, self.eventManager.enemiesAlive)
 
+        for button in self.listeButton :
+            button.update()
+
     def render(self):
         GameManager.screen.fill([255, 255, 255])
         GameManager.screen.blit(self.background, (0,0))
 
         self.backButton.render()
         self.backButton.update()
+
+        for button in self.listeButton :
+            button.render()
             
         self.eventManager.render(self.screen)
         self.towerManager.render(self.screen)
@@ -59,3 +75,6 @@ class GameManager:
 
     def stop(self):
         GameManager.running = False
+
+    def BindButton(self, index:int, function):
+        self.listeButton[index].bind(function)
