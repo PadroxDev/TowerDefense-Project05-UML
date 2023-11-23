@@ -4,6 +4,7 @@ from pygame.rect import Rect
 from models.Towers.Golem import GolemI
 from models.Towers.Archer import ArcherI
 from models.Towers.Wizard import WizardI
+from models.Text import Text
 import pygame
 
 class TowerManager:
@@ -11,38 +12,21 @@ class TowerManager:
         TowerManager.towersList = []
         self.money = money
         TowerManager.towersListTemp = []
+        self.notEnoughMoneyMessage = None
+        self.displayMoneyMessageTimer = 0
+        self.notEnoughMoneyMessage = Text("Not enough money !", Rect(100, 200, 300, 100), 18, pygame.Color(185, 30, 30))
 
     def CheckIfBuildable(self):
         mousePos: Vector2 = pygame.mouse.get_pos()
         for tower in TowerManager.towersList:
             distance = (tower.position - Vector2(mousePos)).magnitude()
-            if(distance <= 130):
+            if(distance <= 150):
                 return False
         return True
-        #self.BuildTurret(mousePos)
-        
-    def BuildTurret(self, mousePos: Vector2):
-        mousePos = pygame.mouse.get_pos()
-        lancer = GolemI(mousePos)
-        archer = ArcherI(mousePos)
-        wizard = WizardI(mousePos)
-        TowerManager.towersList.append(lancer)
-        self.money.removeMoney(lancer.price)
-        
-        
-    # def BuildTurret(self, mousePos: Vector2):
-    #     mousePos = pygame.mouse.get_pos()
-    #     lancer = LancerI(mousePos - Vector2(1,1)*256*0.5)
-    #     TowerManager.towersList.append(lancer)
-
-    # def BuildTurret(self, mousePos: Vector2):
-    #     mousePos = pygame.mouse.get_pos()
-    #     unit = None
-    #     archer = ArcherI(mousePos)
-    #     wizard = WizardI(mousePos)
-    #     TowerManager.towersList.append(lancer)
 
     def update(self, dT, enemies):
+        self.displayMoneyMessageTimer -= dT
+
         for tower in self.towersList:
             tower.update(dT, enemies)
         
@@ -52,13 +36,14 @@ class TowerManager:
             self.updateColor()
 
     def render(self, surf: pygame.Surface):
+        if (self.displayMoneyMessageTimer > 0):
+            self.notEnoughMoneyMessage.render(surf)
+
         for tower in self.towersList:
             tower.render(surf)
         
         for tower in self.towersListTemp:
             tower.render(surf)
-
-    #Code relatif au placement d'une tourelle en transparence
 
     def PlaceHighlightLancer(self):
         TowerManager.towersListTemp[0].setOpacity(100)
@@ -83,7 +68,8 @@ class TowerManager:
                 self.PlaceHighlightLancer()
                 self.money.removeMoney(GolemI.Price)
             else:
-                print("not enough money for golem")
+                self.displayMoneyMessageTimer = 2
+                self.notEnoughMoneyMessage.setContent("Not enough money to buy an Golem !")
     
     def createArcher(self):
         if(len(self.towersListTemp)==0):
@@ -92,7 +78,8 @@ class TowerManager:
                 self.PlaceHighlightLancer()
                 self.money.removeMoney(ArcherI.Price)
             else:
-                print("not enough money for archer")
+                self.displayMoneyMessageTimer = 2
+                self.notEnoughMoneyMessage.setContent("Not enough money to buy an Archer !")
 
     def createWizard(self):
         if(len(self.towersListTemp)==0):
@@ -101,4 +88,5 @@ class TowerManager:
                 self.PlaceHighlightLancer()
                 self.money.removeMoney(WizardI.Price)
             else:
-                print("not enough money for wizard")
+                self.notEnoughMoneyMessage.setContent("Not enough money to buy a Wizard !")
+                self.displayMoneyMessageTimer = 2

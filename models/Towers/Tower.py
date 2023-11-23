@@ -62,18 +62,13 @@ class TowerBase:
         if(dir != Vector2(0,0)): dir = dir.normalize()
         self.dir = dir.copy()
         self.angle = math.degrees(math.atan2(dir.y, dir.x))
-        print(self.angle)
-
-    def render(self, surf: Surface):
-        draw.circle(surf, Color(255, 255, 255, 30), self.position, self.range, 2)
-        surf.blit(self.image, self.position - Vector2(1, 1) * 200 * 0.5)
 
     def upgrade(self):
         pass
 
     def render(self, surf: Surface):
         rotatedImage = ouryel.rotate(self.currentImage, self.angle)
-        surf.blit(rotatedImage, self.position)
+        surf.blit(rotatedImage, self.position - Vector2(1, 1) * 200 * 0.5)
 
     def SetRedimage(self):
         self.redImage.fill(Color(255, 0, 0), None, BLEND_ADD)
@@ -89,4 +84,4 @@ class TowerBase:
 
     def updatePosition(self):
         mousePos = mouse.get_pos()
-        self.position = Vector2(mousePos[0]-(100) ,mousePos[1] - (100))
+        self.position = mousePos

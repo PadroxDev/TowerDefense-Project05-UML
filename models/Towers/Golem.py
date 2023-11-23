@@ -25,7 +25,6 @@ class GolemI(TowerBase):
         self.normalImage = img.load(self.SpritePath).convert_alpha()
         self.angle = 0
         self.dir = Vector2(0, 0)
-        self.currentTarget = States.SearchingForTarget
         self.redImage = img.load(self.SpritePath).convert_alpha()
         self.currentImage = self.normalImage
         self.imageRect = self.normalImage.get_rect()

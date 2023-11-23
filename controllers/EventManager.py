@@ -7,14 +7,14 @@ from models.Map import Path
 from pygame import Surface
 
 TIME_BEFORE_STARTING = 3
-TIME_BETWEEN_SPAWNS = 0.5
+TIME_BETWEEN_SPAWNS = 1.5
 
 class EventManager:
-    def __init__(self, moulaga):
+    def __init__(self, money):
         self.waveIndex = 0
         self.mobIndex = 0
         self.enemiesAlive = []
-        self.moulaga = moulaga
+        self.money = money
         self.waitingTime = TIME_BEFORE_STARTING
         self.doneSpawningWaves = False
 
@@ -44,10 +44,13 @@ class EventManager:
 
     def updateEnemies(self, dT: float):
         for enemy in self.enemiesAlive:
-            reachedEndOfPath = enemy.moveTowardsWaypoint(dT)
-            if(reachedEndOfPath or enemy.dead):
+            enemy.update(dT)
+            if(enemy.reachedEndOfPath):
                 self.enemiesAlive.remove(enemy)
-                self.moulaga.addMoney(50)
+                # Damage
+            elif(enemy.dead):
+                self.enemiesAlive.remove(enemy)
+                self.money.addMoney(50)
 
     def spawnEnemyFromChar(self, char):
         if(char == 'P'):
