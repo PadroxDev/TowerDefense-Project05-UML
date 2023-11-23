@@ -48,6 +48,7 @@ class GameManager:
 
         self.backButton.render()
         self.backButton.update()
+
         for i in range(len(Path)-1):
             p1 = Path[i]
             p2 = Path[i+1]

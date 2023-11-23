@@ -1,7 +1,8 @@
 from pygame.math import Vector2
 from models.Map import Path
+from pygame import Surface
 
-CHECKPOINT_PROXIMITY_VALIDATION = 50
+CHECKPOINT_PROXIMITY_VALIDATION = 1.5
 
 class Enemy:
     def __init__(self, pos: Vector2, hp: int, speed: int, dropMoney: int, difficultyScalar: float):
@@ -12,19 +13,25 @@ class Enemy:
         self.currentWaypoint = 0
 
     def moveTowardsWaypoint(self, dT: float):
-        waypoint: Vector2 = Path[self.currentWaypoint]
+        waypoint: Vector2 = Path[self.currentWaypoint].copy()
         dir: Vector2 = (waypoint - self.position)
         if(dir!=Vector2(0,0)): dir = dir.normalize()
+        self.p1 = self.position
+        self.p2 = self.position + dir * 30
         self.position += dir * self.speed * dT
 
         distance = (waypoint - self.position).magnitude()
         if (distance > CHECKPOINT_PROXIMITY_VALIDATION):
             return False
+                
         
         # Increment waypoint index
         self.currentWaypoint += 1
-        if(self.currentWaypoint == len(Path)-1): # Path completed
+        if(self.currentWaypoint == len(Path)): # Path completed
             return True # Means this unit has to be removed from the list and destroyed
 
     def takeDamage(self, damage):
         self.hp -= damage
+
+    def render(self, surf: Surface):
+        pass
