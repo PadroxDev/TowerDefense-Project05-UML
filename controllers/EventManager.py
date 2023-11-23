@@ -12,11 +12,11 @@ TIME_BEFORE_STARTING = 3
 TIME_BETWEEN_SPAWNS = 1.5
 
 class EventManager:
-    def __init__(self, money):
+    def __init__(self, player):
         self.waveIndex = 0
         self.mobIndex = 0
         self.enemiesAlive = []
-        self.money = money
+        self.player = player
         self.waitingTime = TIME_BEFORE_STARTING
         self.doneSpawningWaves = False
         self.playerHealthBar = HealthBar(Vector2(1280 * 0.5 - 250, 20), Vector2(500, 60))
@@ -53,8 +53,8 @@ class EventManager:
                 self.enemiesAlive.remove(enemy)
                 # Damage
             elif(enemy.dead):
+                self.player.addMoney(enemy.dropMoney)
                 self.enemiesAlive.remove(enemy)
-                self.money.addMoney(50)
 
     def spawnEnemyFromChar(self, char):
         if(char == 'P'):

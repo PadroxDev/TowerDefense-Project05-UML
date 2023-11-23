@@ -8,16 +8,20 @@ from models.Text import Text
 import pygame
 
 class TowerManager:
-    def __init__(self, money: int) -> None:
+    def __init__(self, player) -> None:
+    #def __init__(self, money: int) -> None:
         TowerManager.towersList = []
-        self.money = money
+        TowerManager.player = player
         TowerManager.towersListTemp = []
-        self.notEnoughMoneyMessage = None
-        self.displayMoneyMessageTimer = 0
-        self.notEnoughMoneyMessage = Text("Not enough money !", Rect(100, 200, 300, 100), 18, pygame.Color(185, 30, 30))
 
-    def CheckIfBuildable(self):
+        TowerManager.buttonList = []
+        TowerManager.buttonList.append(Button("res/sprites/button/cross.png", Rect(890, 600, 80, 80)))
+        TowerManager.buttonList[0].bind(self.cancelTurret)
+
+    def CheckIfBuildable(self, turret ):
         mousePos: Vector2 = pygame.mouse.get_pos()
+        if (turret.price > TowerManager.player.money.money):
+            return False
         for tower in TowerManager.towersList:
             distance = (tower.position - Vector2(mousePos)).magnitude()
             if(distance <= 150):
@@ -31,9 +35,11 @@ class TowerManager:
             tower.update(dT, enemies)
         
         for tower in self.towersListTemp:
-            tower.update(dT, enemies)
             tower.updatePosition()
             self.updateColor()
+        
+        if len(TowerManager.towersListTemp) != 0 :
+            TowerManager.buttonList[0].update()
 
     def render(self, surf: pygame.Surface):
         if (self.displayMoneyMessageTimer > 0):
@@ -45,21 +51,35 @@ class TowerManager:
         for tower in self.towersListTemp:
             tower.render(surf)
 
+        if len(TowerManager.towersListTemp) != 0:
+            TowerManager.buttonList[0].render()
+
+
+    #Code relatif au placement d'une tourelle en transparence
+
     def PlaceHighlightLancer(self):
         TowerManager.towersListTemp[0].setOpacity(100)
         TowerManager.towersListTemp[0].SetRedimage()
 
     def createTurret(self):
-        if(self.CheckIfBuildable() and len(TowerManager.towersListTemp) != 0):
-            TowerManager.towersList.append(TowerManager.towersListTemp[0])
-            TowerManager.towersList[-1].setOpacity(255)
-            TowerManager.towersListTemp.pop()
-
+        
+        if len(TowerManager.towersListTemp) != 0 :
+            TowerManager.buttonList[0].update()
+        if len(TowerManager.towersListTemp) != 0 :
+            if(self.CheckIfBuildable(TowerManager.towersListTemp[0])):
+                print(TowerManager.towersListTemp[0].price)
+                TowerManager.towersList.append(TowerManager.towersListTemp[0])
+                TowerManager.towersList[-1].setOpacity(255)
+                TowerManager.player.removeMoney(TowerManager.towersListTemp[0].price)
+                
+                TowerManager.towersListTemp.clear()
+      
     def updateColor(self):
-        if(self.CheckIfBuildable()):
-            TowerManager.towersListTemp[0].changeNormal()
-        else:
-            TowerManager.towersListTemp[0].changeRed()
+        if len(TowerManager.towersListTemp) != 0 :
+            if(self.CheckIfBuildable(TowerManager.towersListTemp[0])):
+                TowerManager.towersListTemp[0].changeNormal()
+            else:
+                TowerManager.towersListTemp[0].changeRed()
 
     def createGolem(self):
         if(len(self.towersListTemp)==0):
@@ -83,10 +103,9 @@ class TowerManager:
 
     def createWizard(self):
         if(len(self.towersListTemp)==0):
-            if(self.money.getMoney() >= WizardI.Price):
-                TowerManager.towersListTemp.append(WizardI(Vector2(1,1)))
-                self.PlaceHighlightLancer()
-                self.money.removeMoney(WizardI.Price)
-            else:
-                self.notEnoughMoneyMessage.setContent("Not enough money to buy a Wizard !")
-                self.displayMoneyMessageTimer = 2
+            TowerManager.towersListTemp.append(WizardI(Vector2(1,1)))
+            self.PlaceHighlightLancer()
+
+    def cancelTurret(self):
+        TowerManager.towersListTemp.clear()
+        
