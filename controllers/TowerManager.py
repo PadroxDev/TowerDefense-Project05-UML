@@ -8,28 +8,24 @@ import pygame
 
 class TowerManager:
     def __init__(self, player) -> None:
+    #def __init__(self, money: int) -> None:
         TowerManager.towersList = []
         TowerManager.player = player
         TowerManager.towersListTemp = []
 
-    def CheckIfBuildable(self, tower ):
+        TowerManager.buttonList = []
+        TowerManager.buttonList.append(Button("res/sprites/button/cross.png", Rect(890, 600, 80, 80)))
+        TowerManager.buttonList[0].bind(self.cancelTurret)
+
+    def CheckIfBuildable(self, turret ):
         mousePos: Vector2 = pygame.mouse.get_pos()
         for tower in TowerManager.towersList:
             distance = (tower.position - Vector2(mousePos)).magnitude()
             if(distance <= 130):
                 return False
-        if (tower.price > TowerManager.player.money.money):
+        if (turret.price > TowerManager.player.money.money):
             return False
         return True
-        #self.BuildTurret(mousePos)
-        
-    # def BuildTurret(self, mousePos: Vector2):
-    #     mousePos = pygame.mouse.get_pos()
-    #     lancer = GolemI(mousePos)
-    #     archer = ArcherI(mousePos)
-    #     wizard = WizardI(mousePos)
-    #     TowerManager.towersList.append(lancer)
-    #     self.money.removeMoney(lancer.price)
 
     # def BuildTurret(self, mousePos: Vector2):
     #     mousePos = pygame.mouse.get_pos()
@@ -45,6 +41,9 @@ class TowerManager:
         for tower in self.towersListTemp:
             tower.updatePosition()
             self.updateColor()
+        
+        if len(TowerManager.towersListTemp) != 0 :
+            TowerManager.buttonList[0].update()
 
     def render(self, surf: pygame.Surface):
         for tower in self.towersList:
@@ -53,6 +52,10 @@ class TowerManager:
         for tower in self.towersListTemp:
             tower.render(surf)
 
+        if len(TowerManager.towersListTemp) != 0:
+            TowerManager.buttonList[0].render()
+
+
     #Code relatif au placement d'une tourelle en transparence
 
     def PlaceHighlightLancer(self):
@@ -60,14 +63,18 @@ class TowerManager:
         TowerManager.towersListTemp[0].SetRedimage()
 
     def createTurret(self):
+        
+        if len(TowerManager.towersListTemp) != 0 :
+            TowerManager.buttonList[0].update()
         if len(TowerManager.towersListTemp) != 0 :
             if(self.CheckIfBuildable(TowerManager.towersListTemp[0])):
+                print(TowerManager.towersListTemp[0].price)
                 TowerManager.towersList.append(TowerManager.towersListTemp[0])
                 TowerManager.towersList[-1].setOpacity(255)
                 TowerManager.player.removeMoney(TowerManager.towersListTemp[0].price)
-                TowerManager.towersListTemp.pop()
-            
-
+                
+                TowerManager.towersListTemp.clear()
+      
     def updateColor(self):
         if len(TowerManager.towersListTemp) != 0 :
             if(self.CheckIfBuildable(TowerManager.towersListTemp[0])):
@@ -89,3 +96,7 @@ class TowerManager:
         if(len(self.towersListTemp)==0):
             TowerManager.towersListTemp.append(WizardI(Vector2(1,1)))
             self.PlaceHighlightLancer()
+
+    def cancelTurret(self):
+        TowerManager.towersListTemp.clear()
+        

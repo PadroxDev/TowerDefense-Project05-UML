@@ -13,6 +13,9 @@ class Money:
 
     def removeMoney(self, money: int):
         self.money -= money
+        
+    def getMoney(self):
+        return self.money
 
     def update(self):
         self.moneyText = Text("Money: " + str(self.money), pygame.Rect(10, 645, 500, 250), 50, BLACK)
