@@ -1,6 +1,9 @@
 from enum import Enum
 from models.Enemies.Enemy import Enemy
 from pygame.math import Vector2
+from pygame import Surface, Color
+import pygame.draw as draw
+import pygame.transform as ouryel
 
 class TargetMode(Enum):
     First = 1
@@ -20,6 +23,9 @@ class TowerBase:
         self.targetMode = targetMode
         self.level = level
         self.attackDebounce = asp
+        
+    def resizeImage(self):
+        self.image = ouryel.scale(self.image, Vector2(1, 1) * 200)
 
     def canAttack(self):
         return self.attackDebounce >= self.asp
@@ -28,7 +34,7 @@ class TowerBase:
         self.attackDebounce += dT
         target: Enemy = self.findTarget(enemies)
         if(self.canAttack() and target is not None):
-            self.attackDebounce -= self.asp
+            self.attackDebounce = 0
             self.attack(target, enemies)
 
     def findTarget(self, enemies: list):
@@ -46,8 +52,9 @@ class TowerBase:
     def attack(self, target: Enemy):
         print("Attack Method wasn't overrided !")
 
-    def render(self):
-        print("Render method wasn't overrided !")
+    def render(self, surf: Surface):
+        draw.circle(surf, Color(255, 255, 255, 30), self.position, self.range, 2)
+        surf.blit(self.image, self.position - Vector2(1, 1) * 200 * 0.5)
 
     def upgrade(self):
         pass

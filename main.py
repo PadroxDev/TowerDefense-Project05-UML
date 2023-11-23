@@ -6,5 +6,4 @@ pygame.init()
 
 if __name__ == "__main__":
     Window().globalGame()
-    #GameManager(window).run()
     pygame.quit()

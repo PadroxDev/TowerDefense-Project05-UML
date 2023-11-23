@@ -38,8 +38,6 @@ class GameManager:
                 GameManager.running = False
             elif(event.type == MOUSEBUTTONDOWN):
                 GameManager.towerManager.CheckIfBuildable()
-                print(pygame.mouse.get_pos())
-
 
     def update(self):
         GameManager.deltaTime = GameManager.clock.tick(200) / 1000
@@ -53,11 +51,6 @@ class GameManager:
 
         self.backButton.render()
         self.backButton.update()
-
-        for i in range(len(Path)-1):
-            p1 = Path[i]
-            p2 = Path[i+1]
-            pygame.draw.line(self.screen, Color(255, 255, 255), p1, p2, 16)
             
         self.eventManager.render(self.screen)
         self.towerManager.render(self.screen)

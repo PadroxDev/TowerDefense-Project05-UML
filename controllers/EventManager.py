@@ -4,7 +4,7 @@ from models.Map import Path
 from pygame import Surface
 
 TIME_BEFORE_STARTING = 3
-TIME_BETWEEN_SPAWNS = 2
+TIME_BETWEEN_SPAWNS = 0.5
 
 class EventManager:
     def __init__(self):
