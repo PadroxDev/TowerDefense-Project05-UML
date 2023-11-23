@@ -67,12 +67,6 @@ class GameManager:
 
         self.backButton.render()
         self.backButton.update()
-<<<<<<< HEAD
-=======
-
-        for button in self.listeButton :
-            button.render()
->>>>>>> 39bc9e86436749760d6a983e95009cfff268a466
             
         self.eventManager.render(self.screen)
         self.towerManager.render(self.screen)
