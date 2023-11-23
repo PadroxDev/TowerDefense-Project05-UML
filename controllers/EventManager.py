@@ -5,6 +5,8 @@ from models.Enemies.Iris import Iris
 from models.Money import Money
 from models.Map import Path
 from pygame import Surface
+from pygame.math import Vector2
+from view.HealthBar import HealthBar
 
 TIME_BEFORE_STARTING = 3
 TIME_BETWEEN_SPAWNS = 1.5
@@ -17,10 +19,12 @@ class EventManager:
         self.money = money
         self.waitingTime = TIME_BEFORE_STARTING
         self.doneSpawningWaves = False
+        self.playerHealthBar = HealthBar(Vector2(1280 * 0.5 - 250, 20), Vector2(500, 60))
 
     def update(self, dT: float):
         self.updateWaves(dT)
         self.updateEnemies(dT)
+        self.playerHealthBar.update(50, 1000)
 
     def updateWaves(self, dT: float):
         if(self.doneSpawningWaves): return
@@ -69,6 +73,7 @@ class EventManager:
     def render(self, surf: Surface):
         for enemy in self.enemiesAlive:
             enemy.render(surf)
+        self.playerHealthBar.render(surf)
 
     def skipWave(self):
         pass
