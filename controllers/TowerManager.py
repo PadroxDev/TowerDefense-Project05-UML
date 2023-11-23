@@ -7,7 +7,7 @@ from models.Towers.Wizard import WizardI
 import pygame
 
 class TowerManager:
-    def __init__(self, money) -> None:
+    def __init__(self, money: int) -> None:
         TowerManager.towersList = []
         self.money = money
         TowerManager.towersListTemp = []
@@ -28,6 +28,8 @@ class TowerManager:
         wizard = WizardI(mousePos)
         TowerManager.towersList.append(lancer)
         self.money.removeMoney(lancer.price)
+        
+        
     # def BuildTurret(self, mousePos: Vector2):
     #     mousePos = pygame.mouse.get_pos()
     #     lancer = LancerI(mousePos - Vector2(1,1)*256*0.5)
@@ -76,15 +78,27 @@ class TowerManager:
 
     def createGolem(self):
         if(len(self.towersListTemp)==0):
-            TowerManager.towersListTemp.append(GolemI(Vector2(1,1)))
-            self.PlaceHighlightLancer()
+            if(self.money.getMoney() >= GolemI.Price):
+                TowerManager.towersListTemp.append(GolemI(Vector2(1,1)))
+                self.PlaceHighlightLancer()
+                self.money.removeMoney(GolemI.Price)
+            else:
+                print("not enough money for golem")
     
     def createArcher(self):
         if(len(self.towersListTemp)==0):
-            TowerManager.towersListTemp.append(ArcherI(Vector2(1,1)))
-            self.PlaceHighlightLancer()
+            if(self.money.getMoney() >= ArcherI.Price):
+                TowerManager.towersListTemp.append(ArcherI(Vector2(1,1)))
+                self.PlaceHighlightLancer()
+                self.money.removeMoney(ArcherI.Price)
+            else:
+                print("not enough money for archer")
 
     def createWizard(self):
         if(len(self.towersListTemp)==0):
-            TowerManager.towersListTemp.append(WizardI(Vector2(1,1)))
-            self.PlaceHighlightLancer()
+            if(self.money.getMoney() >= WizardI.Price):
+                TowerManager.towersListTemp.append(WizardI(Vector2(1,1)))
+                self.PlaceHighlightLancer()
+                self.money.removeMoney(WizardI.Price)
+            else:
+                print("not enough money for wizard")
