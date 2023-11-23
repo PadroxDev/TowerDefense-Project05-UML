@@ -38,6 +38,7 @@ class GameManager:
                 GameManager.running = False
             elif(event.type == MOUSEBUTTONDOWN):
                 GameManager.towerManager.CheckIfBuildable()
+                print(pygame.mouse.get_pos())
 
 
     def update(self):

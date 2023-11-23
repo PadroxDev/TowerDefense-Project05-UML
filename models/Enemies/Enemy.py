@@ -22,7 +22,6 @@ class Enemy:
         distance = (waypoint - self.position).magnitude()
         if (distance > CHECKPOINT_PROXIMITY_VALIDATION):
             return False
-                
         
         # Increment waypoint index
         self.currentWaypoint += 1

@@ -28,7 +28,6 @@ class TowerBase:
         self.attackDebounce += dT
         target: Enemy = self.findTarget(enemies)
         if(self.canAttack() and target is not None):
-            print("ATTACK SHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
             self.attackDebounce -= self.asp
             self.attack(target, enemies)
 
