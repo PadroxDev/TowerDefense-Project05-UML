@@ -20,10 +20,10 @@ class TowerManager:
     
     def BuildTurret(self, mousePos: Vector2):
         mousePos = pygame.mouse.get_pos()
-        lancer = LancerI(mousePos - Vector2(1,1)*256*0.5)
-        archer = ArcherI(mousePos - Vector2(1,1)*256*0.5)
-        wizard = WizardI(mousePos - Vector2(1,1)*256*0.5)
-        TowerManager.towersList.append(archer)
+        lancer = LancerI(mousePos)
+        archer = ArcherI(mousePos)
+        wizard = WizardI(mousePos)
+        TowerManager.towersList.append(lancer)
 
     def update(self, dT, enemies):
         for tower in self.towersList:
