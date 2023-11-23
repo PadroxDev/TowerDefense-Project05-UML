@@ -4,7 +4,7 @@ from models.Map import Path
 from pygame import Surface
 
 TIME_BEFORE_STARTING = 3
-TIME_BETWEEN_SPAWNS = 5
+TIME_BETWEEN_SPAWNS = 1
 
 class EventManager:
     def __init__(self):
@@ -47,7 +47,7 @@ class EventManager:
 
     def spawnEnemyFromChar(self, char):
         if(char == 'P'):
-            spawnPoint = Path[0]
+            spawnPoint = Path[0].copy()
             piggy = Piggy(spawnPoint)
             self.enemiesAlive.append(piggy)
 
