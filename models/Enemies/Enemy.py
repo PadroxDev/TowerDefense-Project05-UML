@@ -23,6 +23,7 @@ class Enemy:
         if (distance > CHECKPOINT_PROXIMITY_VALIDATION):
             return False
                 
+        
         # Increment waypoint index
         self.currentWaypoint += 1
         if(self.currentWaypoint == len(Path)): # Path completed

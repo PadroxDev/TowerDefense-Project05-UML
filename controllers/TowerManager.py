@@ -2,6 +2,8 @@ from controllers.Button import Button
 from pygame.math import Vector2
 from pygame.rect import Rect
 from models.Towers.Lancer import LancerI
+from models.Towers.Archer import ArcherI
+from models.Towers.Wizard import WizardI
 import pygame
 
 class TowerManager:
@@ -18,8 +20,10 @@ class TowerManager:
     
     def BuildTurret(self, mousePos: Vector2):
         mousePos = pygame.mouse.get_pos()
-        lancer = LancerI(mousePos)
-        TowerManager.towersList.append(lancer)
+        lancer = LancerI(mousePos - Vector2(1,1)*256*0.5)
+        archer = ArcherI(mousePos - Vector2(1,1)*256*0.5)
+        wizard = WizardI(mousePos - Vector2(1,1)*256*0.5)
+        TowerManager.towersList.append(archer)
 
     def update(self, dT, enemies):
         for tower in self.towersList:
