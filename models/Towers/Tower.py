@@ -6,6 +6,7 @@ import pygame.draw as draw
 import pygame.transform as ouryel
 import pygame.mouse as mouse
 import math
+from models.Map import Path
 
 class TargetMode(Enum):
     First = 1
@@ -46,16 +47,21 @@ class TowerBase:
             self.attack(target, enemies)
 
     def findTarget(self, enemies: list):
-        nearestTarget = None
-        targetDistance = self.range + 1
+        bestWaypoint = -1
+        targetDistance = None
+        bestTarget = None
         for enemy in enemies:
-            distance = (enemy.position - self.position).magnitude()
-            if(distance > self.range and distance >= targetDistance): continue
-
-            nearestTarget = enemy
-            targetDistance = distance
-        
-        return nearestTarget
+            if(len(Path) == enemy.currentWaypoint): continue
+            waypoint: Vector2 = Path[enemy.currentWaypoint]
+            distanceFromTower = (self.position - enemy.position).magnitude()
+            distanceFromWaypoint = (waypoint - enemy.position).magnitude()
+            if(distanceFromTower > self.range): continue
+            if(enemy.currentWaypoint < bestWaypoint): continue
+            if(targetDistance is not None and distanceFromWaypoint >= targetDistance): continue
+            targetDistance = distanceFromWaypoint
+            bestWaypoint = enemy.currentWaypoint
+            bestTarget = enemy
+        return bestTarget
 
     def attack(self, target: Enemy):
         dir: Vector2 = (target.position - self.position)
@@ -65,6 +71,9 @@ class TowerBase:
 
     def upgrade(self):
         pass
+
+    def renderRange(self, surf):
+        draw.circle(surf, Color("white"), self.position, self.range, 2)
 
     def render(self, surf: Surface):
         rotatedImage = ouryel.rotate(self.currentImage, self.angle)

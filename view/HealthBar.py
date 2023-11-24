@@ -9,11 +9,12 @@ LOW_COLOR = Color(255, 0, 0)
 FULL_COLOR = Color(0, 200, 0)
 
 class HealthBar:
-    def __init__(self, position: Vector2, size: Vector2):
+    def __init__(self, position: Vector2, size: Vector2, borderSize: float = 8):
         self.position = position
         self.size = size
         self.health = 0
         self.maxHealth = 0
+        self.borderSize = borderSize
 
     def update(self, health: float, maxHealth: float):
         self.health = health
@@ -22,8 +23,8 @@ class HealthBar:
     def render(self, surf: Surface):
         rect: Rect = Rect(self.position, self.size)
         draw.rect(surf, BACKGROUND_COLOR, rect)
-        draw.rect(surf, BORDER_COLOR, rect, 8)
+        draw.rect(surf, BORDER_COLOR, rect, self.borderSize)
         alpha = clamp(self.health / self.maxHealth, 0, 1)
         healthColor = Color.lerp(LOW_COLOR, FULL_COLOR, alpha)
-        innerRect = Rect(rect.x + 8, rect.y + 8, rect.w * alpha - 16, rect.h - 16)
+        innerRect = Rect(rect.x + self.borderSize, rect.y + self.borderSize, rect.w * alpha - self.borderSize * 2, rect.h - self.borderSize * 2)
         draw.rect(surf, healthColor, innerRect)

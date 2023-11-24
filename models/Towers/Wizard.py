@@ -6,10 +6,10 @@ import pygame.image as img
 from pygame import Surface, Color
 
 class WizardI(TowerBase):
-    Price = 550
-    Range = 275.0
-    Damage = 20.0
-    ASP = 3
+    Price = 650
+    Range = 300
+    Damage = 40
+    ASP = 1.7
     TargetMode = TargetMode.Nearest
     SpritePath = "res/sprites/towers/Wizard.png"
     AOERange = 120
@@ -27,7 +27,7 @@ class WizardI(TowerBase):
         super().attack(target)
         self.impactPos = target.position
         for enemy in enemies:
-            distance = (enemy.position - self.position).magnitude()
+            distance = (enemy.position - self.impactPos).magnitude()
             if(distance <= self.AOERange):
                 enemy.takeDamage(self.damage)
         target.takeDamage(self.damage)

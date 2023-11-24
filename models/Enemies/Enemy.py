@@ -2,6 +2,7 @@ from pygame.math import Vector2
 from models.Map import Path
 from pygame import Surface
 from enum import Enum
+from view.HealthBar import HealthBar
 
 CHECKPOINT_PROXIMITY_VALIDATION = 1.5
 
@@ -14,15 +15,22 @@ class State(Enum):
 class Enemy:
     def __init__(self, pos: Vector2, hp: int, speed: int, dropMoney: int, difficultyScalar: float):
         self.position = pos
-        self.hp = hp * difficultyScalar
+        self.maxHp = hp * difficultyScalar
+        self.hp = self.maxHp
         self.speed = speed
         self.dropMoney = dropMoney
         self.currentWaypoint = 0
         self.dead = False
         self.reachedEndOfPath = False
         self.currentState = State.UpdateWaypoint
+        self.healthBar = HealthBar(Vector2(self.position.x - 100, self.position.y - 150), Vector2(120, 40), 4)
+
+    def setHealthBarRect(self):
+        self.healthBar.position = self.position.x - 60, self.position.y - 150
 
     def update(self, dT: float):
+        self.setHealthBarRect()
+        self.healthBar.update(self.hp, self.maxHp)
         match(self.currentState):
             case State.UpdateWaypoint:
                 self.handleUpdateWaypoint()
@@ -62,4 +70,4 @@ class Enemy:
             self.currentState = State.Dead
 
     def render(self, surf: Surface):
-        pass
+        self.healthBar.render(surf)

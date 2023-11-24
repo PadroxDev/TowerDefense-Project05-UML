@@ -14,6 +14,10 @@ class TowerManager:
         TowerManager.player = player
         TowerManager.towersListTemp = []
 
+        TowerManager.notEnoughMoneyMessage = None
+        TowerManager.displayMoneyMessageTimer = 0
+        TowerManager.notEnoughMoneyMessage = Text("Cannot build this tower !", Rect(1280 * 0.35 , 720-100, 1280 * 0.5, 100), 35, pygame.Color(255, 80, 80))
+
         TowerManager.buttonList = []
         TowerManager.buttonList.append(Button("res/sprites/button/cross.png", Rect(890, 600, 80, 80)))
         TowerManager.buttonList[0].bind(self.cancelTurret)
@@ -49,13 +53,11 @@ class TowerManager:
             tower.render(surf)
         
         for tower in self.towersListTemp:
+            tower.renderRange(surf)
             tower.render(surf)
 
         if len(TowerManager.towersListTemp) != 0:
             TowerManager.buttonList[0].render()
-
-
-    #Code relatif au placement d'une tourelle en transparence
 
     def PlaceHighlightLancer(self):
         TowerManager.towersListTemp[0].setOpacity(100)
@@ -73,6 +75,8 @@ class TowerManager:
                 TowerManager.player.removeMoney(TowerManager.towersListTemp[0].price)
                 
                 TowerManager.towersListTemp.clear()
+            else:
+                self.displayMoneyMessageTimer = 2
       
     def updateColor(self):
         if len(TowerManager.towersListTemp) != 0 :
@@ -83,23 +87,13 @@ class TowerManager:
 
     def createGolem(self):
         if(len(self.towersListTemp)==0):
-            if(self.money.getMoney() >= GolemI.Price):
-                TowerManager.towersListTemp.append(GolemI(Vector2(1,1)))
-                self.PlaceHighlightLancer()
-                self.money.removeMoney(GolemI.Price)
-            else:
-                self.displayMoneyMessageTimer = 2
-                self.notEnoughMoneyMessage.setContent("Not enough money to buy an Golem !")
+            TowerManager.towersListTemp.append(GolemI(Vector2(1,1)))
+            self.PlaceHighlightLancer()
     
     def createArcher(self):
         if(len(self.towersListTemp)==0):
-            if(self.money.getMoney() >= ArcherI.Price):
-                TowerManager.towersListTemp.append(ArcherI(Vector2(1,1)))
-                self.PlaceHighlightLancer()
-                self.money.removeMoney(ArcherI.Price)
-            else:
-                self.displayMoneyMessageTimer = 2
-                self.notEnoughMoneyMessage.setContent("Not enough money to buy an Archer !")
+            TowerManager.towersListTemp.append(ArcherI(Vector2(1,1)))
+            self.PlaceHighlightLancer()
 
     def createWizard(self):
         if(len(self.towersListTemp)==0):

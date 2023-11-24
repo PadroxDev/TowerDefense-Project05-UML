@@ -13,10 +13,10 @@ class States(Enum):
     Recovering = 3
 
 class GolemI(TowerBase):
-    Price = 650
-    Range = 150.0
-    Damage = 20.0
-    ASP = 1.5
+    Price = 450
+    Range = 125.0
+    Damage = 800
+    ASP = 3.25
     TargetMode = TargetMode.Nearest
     SpritePath = "res/sprites/towers/Golem.png"
 

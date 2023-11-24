@@ -7,10 +7,10 @@ import pygame.image as img
 from pygame import Surface
 
 class ArcherI(TowerBase):
-    Price = 400
+    Price = 300
     Range = 400
-    Damage = 100
-    ASP = 0.6
+    Damage = 20
+    ASP = 0.9
     TargetMode = TargetMode.Nearest
     SpritePath = "res/sprites/towers/Archer.png"
 

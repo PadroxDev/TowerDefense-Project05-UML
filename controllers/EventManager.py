@@ -9,7 +9,7 @@ from pygame.math import Vector2
 from view.HealthBar import HealthBar
 
 TIME_BEFORE_STARTING = 3
-TIME_BETWEEN_SPAWNS = 1.5
+TIME_BETWEEN_SPAWNS = 0.5
 
 class EventManager:
     def __init__(self, player):
@@ -24,7 +24,7 @@ class EventManager:
     def update(self, dT: float):
         self.updateWaves(dT)
         self.updateEnemies(dT)
-        self.playerHealthBar.update(50, 1000)
+        self.playerHealthBar.update(self.player.hp, self.player.maxHealth)
 
     def updateWaves(self, dT: float):
         if(self.doneSpawningWaves): return
@@ -50,8 +50,8 @@ class EventManager:
         for enemy in self.enemiesAlive:
             enemy.update(dT)
             if(enemy.reachedEndOfPath):
+                self.player.takeDamage(enemy.hp)
                 self.enemiesAlive.remove(enemy)
-                # Damage
             elif(enemy.dead):
                 self.player.addMoney(enemy.dropMoney)
                 self.enemiesAlive.remove(enemy)
